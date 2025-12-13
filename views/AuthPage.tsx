@@ -97,8 +97,8 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
       </div>
 
       {/* Right Side - Auth Forms */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 lg:p-12 relative">
-        <div className="absolute top-8 right-8 flex gap-4">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-4 md:p-6 lg:p-12 relative overflow-y-auto">
+        <div className="absolute top-4 right-4 md:top-8 md:right-8 flex gap-2 md:gap-4 z-20">
              <button 
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
@@ -108,7 +108,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
               </button>
             <button 
                 onClick={onBack}
-                className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-medical-primary dark:hover:text-emerald-400 transition-colors font-medium text-sm"
+                className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-medical-primary dark:hover:text-emerald-400 transition-colors font-medium text-sm bg-white dark:bg-slate-800 px-3 py-2 rounded-lg shadow-sm lg:bg-transparent lg:shadow-none lg:p-0"
             >
                 <span className="hidden lg:inline"><ArrowLeft size={16} /></span> 
                 Site Vitrine
@@ -116,7 +116,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
             </button>
         </div>
 
-        <div className="w-full max-w-md space-y-8 animate-fade-in">
+        <div className="w-full max-w-md space-y-8 animate-fade-in mt-12 lg:mt-0">
             <div className="text-center">
                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
                     {isLogin ? 'Connexion' : 'Créer un compte'}
@@ -129,12 +129,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
             <GlassCard className="border-emerald-100 shadow-xl shadow-emerald-50/50 dark:shadow-none dark:border-slate-800 relative">
                 <form onSubmit={handleSubmit} className="space-y-5">
                     
-                    {/* Role Selection Grid - Visible for both Login and Register for easy Demo access */}
+                    {/* Role Selection Grid - Responsive */}
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">
                             {isLogin ? 'Se connecter en tant que :' : 'Je suis :'}
                         </label>
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             {roles.map((r) => (
                                 <button
                                     key={r.id}
@@ -156,7 +156,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
                     </div>
 
                     {!isLogin && (
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <NeonInput 
                                 label="Nom complet" 
                                 placeholder={role === Role.DOCTOR ? "Dr. Jean Dupont" : "Jean Dupont"}
@@ -244,7 +244,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
                 )}
             </GlassCard>
 
-            <div className="text-center">
+            <div className="text-center pb-8 lg:pb-0">
                 <p className="text-slate-600 dark:text-slate-400">
                     {isLogin ? "Pas encore de compte ?" : "Déjà un compte ?"}
                     <button 
@@ -260,7 +260,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
         </div>
         
         {/* Footer info */}
-        <div className="absolute bottom-6 text-slate-400 text-xs dark:text-slate-500">
+        <div className="lg:absolute bottom-6 text-slate-400 text-xs dark:text-slate-500">
             &copy; {new Date().getFullYear()} Clinique Gamma. Sécurité HIPAA & RGPD.
         </div>
       </div>

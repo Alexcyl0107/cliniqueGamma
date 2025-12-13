@@ -119,30 +119,31 @@ const PatientDashboard = () => {
   };
 
   return (
-    <div className="flex h-full bg-slate-50 gap-4">
-      {/* Sidebar Interne Simplifiée */}
-      <div className="w-20 lg:w-64 flex flex-col bg-white border-r border-slate-200 h-full py-6">
+    <div className="flex flex-col lg:flex-row h-full bg-slate-50 dark:bg-slate-900 gap-4 transition-colors">
+      
+      {/* Sidebar Interne Simplifiée - Responsive */}
+      <div className="w-full lg:w-64 flex lg:flex-col flex-row overflow-x-auto lg:overflow-visible bg-white dark:bg-slate-800 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-700 py-4 shrink-0 px-4 lg:px-0">
          <div className="px-6 mb-8 hidden lg:block">
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Espace Patient</h2>
+            <h2 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Espace Patient</h2>
          </div>
-         <nav className="flex-1 space-y-2 px-2 lg:px-4">
+         <nav className="flex lg:flex-col space-x-3 lg:space-x-0 lg:space-y-2 lg:px-4 min-w-max lg:min-w-0">
             {[
               { id: 'home', label: 'Mon Espace', icon: Activity },
               { id: 'appointments', label: 'Historique RDV', icon: Calendar },
               { id: 'documents', label: 'Mes Ordonnances', icon: FileText },
-              { id: 'pharmacy', label: 'Achat Médicaments', icon: ShoppingBag }, // NOUVEAU BOUTON
+              { id: 'pharmacy', label: 'Achat Médicaments', icon: ShoppingBag }, 
             ].map(item => (
                <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id as any)}
-                  className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition-all ${
+                  className={`w-auto lg:w-full flex items-center gap-3 md:gap-4 px-4 py-3 md:py-4 rounded-2xl font-bold transition-all whitespace-nowrap ${
                      currentView === item.id 
-                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
-                     : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 dark:shadow-none' 
+                     : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                >
                   <item.icon size={22} />
-                  <span className="hidden lg:inline">{item.label}</span>
+                  <span className="inline lg:hidden xl:inline">{item.label}</span>
                </button>
             ))}
          </nav>
@@ -155,13 +156,13 @@ const PatientDashboard = () => {
          {currentView === 'home' && (
             <div className="space-y-8 animate-fade-in max-w-5xl mx-auto">
               {/* En-tête Accueil */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 dark:border-slate-700 pb-6">
                 <div>
-                  <h1 className="text-3xl font-bold text-slate-800">Mon Espace Santé</h1>
-                  <p className="text-slate-500">Bienvenue, {PATIENT_INFO.name}.</p>
+                  <h1 className="text-3xl font-bold text-slate-800 dark:text-white">Mon Espace Santé</h1>
+                  <p className="text-slate-500 dark:text-slate-400">Bienvenue, {PATIENT_INFO.name}.</p>
                 </div>
                 <div className="flex gap-4">
-                    <div className="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 border border-emerald-100 shadow-sm">
+                    <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2 border border-emerald-100 dark:border-emerald-800 shadow-sm">
                         <Shield size={16} /> Patient Vérifié
                     </div>
                 </div>
@@ -175,18 +176,18 @@ const PatientDashboard = () => {
                     {requestStatus === 'idle' && (
                         <>
                             <div className="text-center mb-6">
-                                <div className="inline-flex p-3 bg-blue-100 text-blue-600 rounded-full mb-4 shadow-sm">
+                                <div className="inline-flex p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full mb-4 shadow-sm">
                                     <Stethoscope size={32} />
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-800">Besoin d'un médecin ?</h2>
-                                <p className="text-slate-500">Choisissez le service et décrivez vos symptômes.</p>
+                                <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Besoin d'un médecin ?</h2>
+                                <p className="text-slate-500 dark:text-slate-400">Choisissez le service et décrivez vos symptômes.</p>
                             </div>
                             
-                            <GlassCard className="border-t-4 border-t-blue-500 min-h-[350px] flex flex-col justify-center shadow-xl shadow-blue-50">
+                            <GlassCard className="border-t-4 border-t-blue-500 min-h-[350px] flex flex-col justify-center shadow-xl shadow-blue-50 dark:shadow-none">
                                 
                                 {/* SELECTEUR DE SERVICE */}
                                 <div className="mb-6">
-                                    <label className="block text-sm font-bold text-slate-700 mb-3 uppercase tracking-wider">
+                                    <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider">
                                         1. Service Souhaité
                                     </label>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -199,26 +200,26 @@ const PatientDashboard = () => {
                                                     ? srv.id === 'Urgence' 
                                                         ? 'bg-red-600 text-white border-red-600 shadow-lg shadow-red-200 scale-105 animate-pulse'
                                                         : 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-200 scale-105'
-                                                    : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-white hover:border-blue-300'
+                                                    : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700 hover:border-blue-300'
                                                 }`}
                                             >
                                                 <srv.icon size={20} className="mb-1" />
-                                                <span className="text-xs font-bold">{srv.label}</span>
+                                                <span className="text-xs font-bold text-center">{srv.label}</span>
                                             </button>
                                         ))}
                                     </div>
                                     {selectedService === 'Urgence' && (
-                                        <div className="mt-2 text-center text-xs font-bold text-red-600 bg-red-50 p-2 rounded">
+                                        <div className="mt-2 text-center text-xs font-bold text-red-600 bg-red-50 dark:bg-red-900/30 p-2 rounded">
                                             ⚠️ Attention: Cela déclenchera une alerte prioritaire chez les médecins.
                                         </div>
                                     )}
                                 </div>
 
-                                <label className="block text-sm font-bold text-slate-700 mb-3 uppercase tracking-wider">
+                                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider">
                                     2. Description des symptômes
                                 </label>
                                 <textarea 
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-5 text-slate-800 text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all min-h-[120px] resize-none mb-6 shadow-inner"
+                                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 text-slate-800 dark:text-white text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all min-h-[120px] resize-none mb-6 shadow-inner"
                                     placeholder="Ex: J'ai de la fièvre depuis 2 jours..."
                                     value={symptomInput}
                                     onChange={(e) => setSymptomInput(e.target.value)}
@@ -238,11 +239,11 @@ const PatientDashboard = () => {
                     {/* ETAT 2 : En attente du médecin */}
                     {requestStatus === 'pending' && (
                         <GlassCard className={`text-center py-16 border-t-4 relative ${
-                            selectedService === 'Urgence' ? 'border-t-red-500 bg-red-50/50' : 'border-t-yellow-400 bg-yellow-50/30'
+                            selectedService === 'Urgence' ? 'border-t-red-500 bg-red-50/50 dark:bg-red-900/10' : 'border-t-yellow-400 bg-yellow-50/30 dark:bg-yellow-900/10'
                         }`}>
                              <button 
                                 onClick={cancelRequest} 
-                                className="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-sm font-bold flex items-center gap-1 bg-white px-3 py-1 rounded-full border border-slate-100 shadow-sm"
+                                className="absolute top-4 right-4 text-slate-400 hover:text-red-500 text-sm font-bold flex items-center gap-1 bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm"
                              >
                                 <XCircle size={16} /> Annuler
                              </button>
@@ -251,13 +252,13 @@ const PatientDashboard = () => {
                              }`}>
                                 <Loader size={40} className="animate-spin-slow" />
                             </div>
-                            <h3 className={`text-3xl font-bold mb-3 ${selectedService === 'Urgence' ? 'text-red-800' : 'text-slate-800'}`}>
+                            <h3 className={`text-3xl font-bold mb-3 ${selectedService === 'Urgence' ? 'text-red-800 dark:text-red-400' : 'text-slate-800 dark:text-white'}`}>
                                 {selectedService === 'Urgence' ? 'ALERTE URGENCE ENVOYÉE' : 'Demande Transmise'}
                             </h3>
-                            <p className="text-slate-600 text-lg max-w-md mx-auto mb-4">
-                                Votre demande pour le service <span className="font-bold text-slate-800 bg-white px-2 py-0.5 rounded border border-slate-200">{SERVICES_LIST.find(s => s.id === JSON.parse(localStorage.getItem('patient_request') || '{}').service)?.label || 'Général'}</span> est en cours de traitement.
+                            <p className="text-slate-600 dark:text-slate-300 text-lg max-w-md mx-auto mb-4">
+                                Votre demande pour le service <span className="font-bold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">{SERVICES_LIST.find(s => s.id === JSON.parse(localStorage.getItem('patient_request') || '{}').service)?.label || 'Général'}</span> est en cours de traitement.
                             </p>
-                            <p className="text-slate-500 inline-block px-4 py-2 rounded-lg border border-slate-100 shadow-sm bg-white">
+                            <p className="text-slate-500 dark:text-slate-400 inline-block px-4 py-2 rounded-lg border border-slate-100 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-800">
                                 {selectedService === 'Urgence' ? 'Une équipe va vous prendre en charge immédiatement.' : "En attente de la fixation de l'heure..."}
                             </p>
                         </GlassCard>
@@ -265,39 +266,39 @@ const PatientDashboard = () => {
 
                     {/* ETAT 3 : Confirmé avec Heure */}
                     {requestStatus === 'confirmed' && appointmentData && (
-                        <GlassCard className="relative overflow-hidden border-t-4 border-t-emerald-500 shadow-2xl shadow-emerald-100">
+                        <GlassCard className="relative overflow-hidden border-t-4 border-t-emerald-500 shadow-2xl shadow-emerald-100 dark:shadow-none">
                             <div className="absolute top-0 right-0 bg-emerald-500 text-white px-4 py-1 text-sm font-bold rounded-bl-xl">
                                 VALIDÉ PAR LE MÉDECIN
                             </div>
                             
                             <div className="text-center py-8">
-                                <p className="text-slate-500 font-bold uppercase tracking-widest text-sm mb-4">Votre rendez-vous est fixé à</p>
+                                <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-sm mb-4">Votre rendez-vous est fixé à</p>
                                 
                                 {/* HEURE DYNAMIQUE */}
-                                <div className="text-7xl font-black text-slate-800 tracking-tighter mb-4 scale-110 transform transition-transform">
+                                <div className="text-7xl font-black text-slate-800 dark:text-white tracking-tighter mb-4 scale-110 transform transition-transform">
                                     {appointmentData.time}
                                 </div>
                                 
                                 <div className="flex justify-center items-center gap-3 mb-8 flex-wrap">
-                                     <span className="bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full font-bold flex items-center gap-2">
+                                     <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 px-4 py-1 rounded-full font-bold flex items-center gap-2">
                                         <Calendar size={18}/> {appointmentData.requestDate}
                                      </span>
-                                     <span className="bg-blue-50 text-blue-800 px-4 py-1 rounded-full font-bold flex items-center gap-2">
+                                     <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-4 py-1 rounded-full font-bold flex items-center gap-2">
                                         <Stethoscope size={18}/> {appointmentData.doctor}
                                      </span>
-                                     <span className="bg-purple-50 text-purple-800 px-4 py-1 rounded-full font-bold flex items-center gap-2 border border-purple-100">
+                                     <span className="bg-purple-50 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 px-4 py-1 rounded-full font-bold flex items-center gap-2 border border-purple-100 dark:border-purple-800">
                                         <Activity size={18}/> {SERVICES_LIST.find(s => s.id === appointmentData.service)?.label || appointmentData.service || 'Consultation'}
                                      </span>
                                 </div>
 
-                                <div className="max-w-md mx-auto bg-slate-50 p-4 rounded-xl text-left border border-slate-200">
+                                <div className="max-w-md mx-auto bg-slate-50 dark:bg-slate-800 p-4 rounded-xl text-left border border-slate-200 dark:border-slate-700">
                                     <p className="text-xs text-slate-400 uppercase font-bold mb-1">Rappel des symptômes :</p>
-                                    <p className="text-slate-700 italic">"{appointmentData.symptoms}"</p>
+                                    <p className="text-slate-700 dark:text-slate-300 italic">"{appointmentData.symptoms}"</p>
                                 </div>
 
                                  <button 
                                     onClick={resetDemo}
-                                    className="mt-8 px-6 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-600 font-bold hover:bg-slate-200 transition-colors text-sm"
+                                    className="mt-8 px-6 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm"
                                 >
                                     Faire une nouvelle demande (Mode Démo)
                                 </button>
@@ -313,20 +314,20 @@ const PatientDashboard = () => {
          {/* --- APPOINTMENTS VIEW --- */}
          {currentView === 'appointments' && (
             <div className="space-y-6 animate-fade-in max-w-4xl mx-auto">
-               <h2 className="text-2xl font-bold text-slate-800 mb-6">Historique des Rendez-vous</h2>
+               <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Historique des Rendez-vous</h2>
                <GlassCard>
                   <div className="space-y-6">
                     {/* Si confirmé, l'ajouter à l'historique */}
                     {requestStatus === 'confirmed' && appointmentData ? (
-                         <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-emerald-50 border border-emerald-100 rounded-2xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 bg-emerald-200 text-emerald-800 px-3 py-1 text-xs font-bold rounded-bl-xl">NOUVEAU</div>
+                         <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 rounded-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-100 px-3 py-1 text-xs font-bold rounded-bl-xl">NOUVEAU</div>
                             <div className="text-center min-w-[100px]">
-                                <span className="block font-black text-4xl text-emerald-600">Auj.</span>
+                                <span className="block font-black text-4xl text-emerald-600 dark:text-emerald-400">Auj.</span>
                             </div>
                             <div className="flex-1 text-center md:text-left">
-                                <p className="font-bold text-2xl text-slate-800">Consultation Confirmée</p>
-                                <p className="text-slate-600 text-lg mb-2">{appointmentData.doctor} - {appointmentData.service}</p>
-                                <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-xl text-emerald-700 font-bold shadow-sm border border-emerald-100">
+                                <p className="font-bold text-2xl text-slate-800 dark:text-white">Consultation Confirmée</p>
+                                <p className="text-slate-600 dark:text-slate-300 text-lg mb-2">{appointmentData.doctor} - {appointmentData.service}</p>
+                                <div className="inline-flex items-center gap-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-xl text-emerald-700 dark:text-emerald-400 font-bold shadow-sm border border-emerald-100 dark:border-emerald-900">
                                     <Clock size={20}/> HEURE : {appointmentData.time}
                                 </div>
                             </div>
@@ -337,14 +338,14 @@ const PatientDashboard = () => {
                     )}
                     
                     {/* Passé (Statique) */}
-                    <div className="flex flex-col md:flex-row items-center gap-6 p-4 border border-slate-100 rounded-2xl opacity-60 grayscale hover:grayscale-0 transition-all">
+                    <div className="flex flex-col md:flex-row items-center gap-6 p-4 border border-slate-100 dark:border-slate-800 rounded-2xl opacity-60 grayscale hover:grayscale-0 transition-all">
                          <div className="text-center min-w-[80px]">
-                            <span className="block font-black text-2xl text-slate-400">10</span>
-                            <span className="text-sm font-bold text-slate-300 uppercase">SEP</span>
+                            <span className="block font-black text-2xl text-slate-400 dark:text-slate-500">10</span>
+                            <span className="text-sm font-bold text-slate-300 dark:text-slate-600 uppercase">SEP</span>
                          </div>
                          <div className="flex-1 text-center md:text-left">
-                            <p className="font-bold text-xl text-slate-700">Suivi Cardiologie</p>
-                            <p className="text-slate-500">Dr. Sarah Connor</p>
+                            <p className="font-bold text-xl text-slate-700 dark:text-slate-200">Suivi Cardiologie</p>
+                            <p className="text-slate-500 dark:text-slate-400">Dr. Sarah Connor</p>
                          </div>
                          <Badge color="blue">Terminé</Badge>
                     </div>
@@ -356,21 +357,21 @@ const PatientDashboard = () => {
          {/* --- DOCUMENTS VIEW --- */}
          {currentView === 'documents' && (
             <div className="space-y-6 animate-fade-in max-w-4xl mx-auto">
-               <h2 className="text-2xl font-bold text-slate-800 mb-6">Toutes mes Ordonnances</h2>
+               <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Toutes mes Ordonnances</h2>
                <div className="grid grid-cols-1 gap-4">
                   {[DOCTOR_PRESCRIPTION].map(doc => (
                      <GlassCard key={doc.id} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
-                           <div className="bg-purple-50 p-4 rounded-xl text-purple-600">
+                           <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-xl text-purple-600 dark:text-purple-400">
                               <Pill size={28} />
                            </div>
                            <div>
-                              <h4 className="font-bold text-slate-800 text-lg">Ordonnance #{doc.id}</h4>
-                              <p className="text-sm text-slate-500">{doc.date} • {doc.doctor}</p>
+                              <h4 className="font-bold text-slate-800 dark:text-white text-lg">Ordonnance #{doc.id}</h4>
+                              <p className="text-sm text-slate-500 dark:text-slate-400">{doc.date} • {doc.doctor}</p>
                               <p className="text-xs text-slate-400 mt-1">{doc.items.length} médicaments</p>
                            </div>
                         </div>
-                        <button className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 hover:text-purple-600 hover:border-purple-200 transition-all font-bold shadow-sm">
+                        <button className="flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 hover:border-purple-200 transition-all font-bold shadow-sm">
                            <Download size={18} /> Télécharger
                         </button>
                      </GlassCard>

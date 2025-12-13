@@ -183,29 +183,29 @@ const DoctorDashboard = () => {
   const dailySchedule = getDailySchedule();
 
   return (
-    <div className={`flex h-full bg-slate-50 dark:bg-slate-950 gap-4 transition-colors duration-500 ${isEmergency ? 'bg-red-50 dark:bg-red-900/10' : ''}`}>
+    <div className={`flex flex-col lg:flex-row h-full min-h-[calc(100vh-80px)] bg-slate-50 dark:bg-slate-950 gap-4 transition-colors duration-500 ${isEmergency ? 'bg-red-50 dark:bg-red-900/10' : ''}`}>
       
       {isEmergency && (
           <div className="fixed inset-0 z-[60] pointer-events-none flex items-start justify-center pt-4">
-              <div className="bg-red-600 text-white px-8 py-4 rounded-b-xl shadow-2xl animate-pulse pointer-events-auto flex items-center gap-6 border-4 border-white">
-                  <AlertOctagon size={48} className="animate-bounce" />
+              <div className="bg-red-600 text-white px-6 md:px-8 py-4 rounded-b-xl shadow-2xl animate-pulse pointer-events-auto flex flex-col md:flex-row items-center gap-4 md:gap-6 border-4 border-white max-w-lg mx-4 text-center md:text-left">
+                  <AlertOctagon size={48} className="animate-bounce shrink-0" />
                   <div>
-                      <h2 className="text-3xl font-black uppercase tracking-widest">URGENCE VITALE</h2>
-                      <p className="text-lg font-bold">Patient : {emergencyPatient} - Service Urgences</p>
+                      <h2 className="text-2xl md:text-3xl font-black uppercase tracking-widest">URGENCE VITALE</h2>
+                      <p className="text-base md:text-lg font-bold">Patient : {emergencyPatient} - Service Urgences</p>
                   </div>
-                  <button onClick={stopAlarm} className="bg-white text-red-600 px-6 py-3 rounded-lg font-black hover:bg-red-100 transition-colors shadow-lg flex items-center gap-2">
-                      <VolumeX size={24}/> STOP ALARME
+                  <button onClick={stopAlarm} className="bg-white text-red-600 px-4 py-2 md:px-6 md:py-3 rounded-lg font-black hover:bg-red-100 transition-colors shadow-lg flex items-center gap-2 whitespace-nowrap">
+                      <VolumeX size={24}/> STOP
                   </button>
               </div>
           </div>
       )}
 
-      {/* Sidebar Navigation */}
-      <div className="w-20 lg:w-64 flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-full py-6 transition-colors duration-300">
+      {/* Internal Sidebar - Becomes Horizontal Scroll on Mobile */}
+      <div className="w-full lg:w-64 flex lg:flex-col flex-row overflow-x-auto lg:overflow-visible bg-white dark:bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 py-4 lg:py-6 shrink-0 gap-2 lg:gap-0 transition-colors duration-300 px-4 lg:px-0">
          <div className="px-6 mb-8 hidden lg:block">
             <h2 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Espace Médecin</h2>
          </div>
-         <nav className="flex-1 space-y-1 px-2 lg:px-4">
+         <nav className="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-1 lg:px-4 min-w-max lg:min-w-0">
             {[
               { id: 'dashboard', label: 'Tableau de bord', icon: Activity },
               { id: 'messages', label: 'Demandes RDV', icon: Inbox },
@@ -216,26 +216,20 @@ const DoctorDashboard = () => {
                <button
                   key={item.id}
                   onClick={() => { setCurrentView(item.id as any); setSelectedPatient(null); }}
-                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl font-medium transition-all ${
+                  className={`flex items-center gap-3 px-3 py-2 lg:py-3 rounded-xl font-medium transition-all whitespace-nowrap ${
                      currentView === item.id 
                      ? 'bg-blue-50 dark:bg-slate-800 text-blue-700 dark:text-emerald-400 shadow-sm' 
                      : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                >
                   <item.icon size={20} />
-                  <span className="hidden lg:inline">{item.label}</span>
+                  <span>{item.label}</span>
                   {item.id === 'messages' && incomingRequests.length > 0 && (
-                     <span className="ml-auto w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                     <span className="ml-auto w-2 h-2 rounded-full bg-red-500 animate-pulse hidden lg:block"></span>
                   )}
                </button>
             ))}
          </nav>
-         <div className="px-4 mt-auto">
-             <button className="w-full flex items-center gap-3 px-3 py-3 text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 rounded-xl transition-all">
-                <LogOut size={20} />
-                <span className="hidden lg:inline font-medium">Déconnexion</span>
-             </button>
-         </div>
       </div>
 
       {/* Main Content Area */}
@@ -243,26 +237,26 @@ const DoctorDashboard = () => {
          {currentView === 'dashboard' && (
             <div className="space-y-6 animate-fade-in relative">
               {notification && (
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full animate-slide-down bg-emerald-600 text-white px-6 py-3 rounded-full shadow-lg z-50 flex items-center gap-2">
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full animate-slide-down bg-emerald-600 text-white px-6 py-3 rounded-full shadow-lg z-50 flex items-center gap-2 w-max max-w-[90%]">
                     <CheckCircle size={20} />
-                    <span className="font-bold">{notification}</span>
+                    <span className="font-bold text-sm md:text-base truncate">{notification}</span>
                 </div>
               )}
               {/* Header Dashboard */}
-              <div className="flex justify-between items-center bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-colors">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 transition-colors gap-4">
                 <div>
                   <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Bonjour, Dr. Kossi 👋</h1>
                   <p className="text-slate-500 dark:text-slate-400">Vous avez <span className="text-blue-600 dark:text-emerald-400 font-bold">{incomingRequests.length} messages</span> en attente.</p>
                 </div>
                 <div className="flex gap-3">
-                  <div className="text-right hidden md:block">
+                  <div className="text-left md:text-right hidden sm:block">
                     <p className="text-2xl font-bold text-slate-800 dark:text-white">09:30</p>
                     <p className="text-sm text-slate-400">Lun, 12 Oct</p>
                   </div>
                 </div>
               </div>
               {/* Metrics (Simulated) */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
                  {/* ... Metrics cards ... */}
                  <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-2xl border border-blue-100 dark:border-blue-900/50 flex flex-col justify-between h-32">
                     <div className="flex justify-between items-start"><div className="p-2 bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 rounded-lg"><User size={20}/></div></div>
@@ -301,13 +295,13 @@ const DoctorDashboard = () => {
               
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 transition-colors">
                   <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-6">Prochain Patient</h3>
-                  <div className="flex items-center gap-6 p-4 border border-blue-100 dark:border-slate-700 bg-blue-50/30 dark:bg-slate-800/50 rounded-xl">
-                      <div className="w-16 h-16 rounded-full bg-blue-200 dark:bg-slate-700 text-blue-700 dark:text-blue-300 flex items-center justify-center text-2xl font-bold">AM</div>
+                  <div className="flex flex-col sm:flex-row items-center gap-6 p-4 border border-blue-100 dark:border-slate-700 bg-blue-50/30 dark:bg-slate-800/50 rounded-xl text-center sm:text-left">
+                      <div className="w-16 h-16 rounded-full bg-blue-200 dark:bg-slate-700 text-blue-700 dark:text-blue-300 flex items-center justify-center text-2xl font-bold shrink-0">AM</div>
                       <div className="flex-1">
                           <h4 className="text-xl font-bold text-slate-800 dark:text-white">Alain Mensah</h4>
                           <p className="text-slate-500 dark:text-slate-400">Consultation Générale • 09:30</p>
                       </div>
-                      <button onClick={() => { setSelectedPatient(patientsList[0]); setCurrentView('patients'); }} className="bg-blue-600 dark:bg-emerald-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:bg-blue-700 dark:hover:bg-emerald-700">Ouvrir Dossier</button>
+                      <button onClick={() => { setSelectedPatient(patientsList[0]); setCurrentView('patients'); }} className="bg-blue-600 dark:bg-emerald-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:bg-blue-700 dark:hover:bg-emerald-700 w-full sm:w-auto">Ouvrir Dossier</button>
                   </div>
               </div>
             </div>
@@ -316,12 +310,12 @@ const DoctorDashboard = () => {
          {/* --- PLANNING VIEW --- */}
          {currentView === 'planning' && (
              <div className="animate-fade-in space-y-6 h-full flex flex-col">
-                 <div className="flex justify-between items-center">
+                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
                         <h2 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                           <Calendar className="text-blue-600 dark:text-emerald-400"/> Planning de la journée
+                           <Calendar className="text-blue-600 dark:text-emerald-400"/> Planning
                         </h2>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm">Aujourd'hui, {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm">{new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
                     </div>
                     <div className="flex gap-2">
                         <NeonButton variant="secondary" onClick={() => {}}>Vue Semaine</NeonButton>
@@ -331,16 +325,16 @@ const DoctorDashboard = () => {
 
                  <div className="flex flex-col lg:flex-row gap-6 flex-1 overflow-hidden">
                      {/* Calendar/Timeline Area */}
-                     <div className="flex-1 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-y-auto p-6 relative transition-colors">
+                     <div className="flex-1 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-y-auto p-4 md:p-6 relative transition-colors">
                          <div className="space-y-0 relative">
-                             <div className="absolute left-[70px] top-0 bottom-0 w-px bg-slate-100 dark:bg-slate-800"></div>
+                             <div className="absolute left-[50px] md:left-[70px] top-0 bottom-0 w-px bg-slate-100 dark:bg-slate-800"></div>
 
                              {hours.map((hour) => {
                                  const appts = dailySchedule.filter(a => a.time.startsWith(hour.split(':')[0]));
                                  
                                  return (
                                      <div key={hour} className="flex min-h-[100px] border-b border-slate-50 dark:border-slate-800 last:border-0 relative group hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                                         <div className="w-16 text-right pr-4 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 font-mono shrink-0">
+                                         <div className="w-12 md:w-16 text-right pr-2 md:pr-4 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 font-mono shrink-0">
                                              {hour}
                                          </div>
                                          
@@ -350,7 +344,7 @@ const DoctorDashboard = () => {
                                                      <div 
                                                         key={idx} 
                                                         className={`
-                                                            p-3 rounded-xl border-l-4 shadow-sm mb-2 flex justify-between items-center cursor-pointer hover:shadow-md transition-all
+                                                            p-2 md:p-3 rounded-xl border-l-4 shadow-sm mb-2 flex justify-between items-center cursor-pointer hover:shadow-md transition-all
                                                             ${appt.type === 'urgency' ? 'bg-red-50 dark:bg-red-900/30 border-l-red-500 text-red-900 dark:text-red-200' : 
                                                               appt.type === 'meeting' ? 'bg-purple-50 dark:bg-purple-900/30 border-l-purple-500 text-purple-900 dark:text-purple-200' :
                                                               appt.type === 'break' ? 'bg-slate-100 dark:bg-slate-800 border-l-slate-400 text-slate-600 dark:text-slate-400 opacity-70' :
@@ -359,11 +353,11 @@ const DoctorDashboard = () => {
                                                         `}
                                                      >
                                                          <div>
-                                                             <div className="flex items-center gap-2">
+                                                             <div className="flex items-center gap-2 flex-wrap">
                                                                  <span className="font-bold text-sm">{appt.time}</span>
                                                                  <span className="font-bold text-base">{appt.patientName}</span>
                                                              </div>
-                                                             {appt.note && <p className="text-xs opacity-80 mt-1">{appt.note}</p>}
+                                                             {appt.note && <p className="text-xs opacity-80 mt-1 line-clamp-1">{appt.note}</p>}
                                                          </div>
                                                      </div>
                                                  ))
@@ -425,7 +419,7 @@ const DoctorDashboard = () => {
          {currentView === 'messages' && (
               <div className="space-y-6 animate-fade-in max-w-4xl mx-auto relative">
                   <h2 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-3">Demandes de Rendez-vous</h2>
-                  {/* ... Messages logic (kept from previous code) ... */}
+                  {/* ... Messages logic ... */}
                   {incomingRequests.length === 0 ? <p className="text-center text-slate-500 py-10">Aucune demande.</p> : incomingRequests.map((req, idx) => (
                       <GlassCard key={idx} className="border-l-4 border-l-blue-500 p-0 overflow-hidden">
                           <div className="p-6">
@@ -445,7 +439,7 @@ const DoctorDashboard = () => {
                                       <Clock size={16} className="text-slate-400"/>
                                       <span className="text-sm font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">Proposer un horaire :</span>
                                   </div>
-                                  <div className="flex gap-2 w-full overflow-x-auto pb-1 md:pb-0">
+                                  <div className="flex gap-2 w-full overflow-x-auto pb-1 md:pb-0 scrollbar-hide">
                                       {['09:00', '10:30', '14:00', '15:15'].map(time => (
                                           <button 
                                             key={time}
@@ -473,20 +467,20 @@ const DoctorDashboard = () => {
          {/* --- PATIENTS VIEW --- */}
          {currentView === 'patients' && (
              !selectedPatient ? (
-                 <div className="h-full bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 animate-fade-in flex flex-col transition-colors">
-                    <div className="flex justify-between items-center mb-6">
+                 <div className="h-full bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-4 md:p-6 animate-fade-in flex flex-col transition-colors">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Liste des Patients</h2>
-                       <div className="flex gap-3">
-                           <div className="relative">
+                       <div className="flex gap-3 w-full md:w-auto">
+                           <div className="relative flex-1 md:flex-none">
                               <Search className="absolute left-3 top-3 text-slate-400" size={16}/>
-                              <input type="text" placeholder="Rechercher..." className="pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm focus:outline-none focus:border-blue-500 dark:text-white" />
+                              <input type="text" placeholder="Rechercher..." className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm focus:outline-none focus:border-blue-500 dark:text-white" />
                            </div>
-                           <NeonButton onClick={() => setShowAddPatientModal(true)} icon={Plus}>Nouveau Patient</NeonButton>
+                           <NeonButton onClick={() => setShowAddPatientModal(true)} icon={Plus}>Nouveau</NeonButton>
                        </div>
                     </div>
 
                     <div className="overflow-x-auto">
-                       <table className="w-full text-left border-collapse">
+                       <table className="w-full text-left border-collapse min-w-[600px]">
                           <thead>
                              <tr className="text-slate-400 text-sm border-b border-slate-100 dark:border-slate-800">
                                 <th className="py-3 px-4 font-medium">Nom</th>
@@ -521,17 +515,16 @@ const DoctorDashboard = () => {
                   <div className="h-full flex flex-col animate-fade-in gap-6">
                     {/* Top Bar: Identity - ENRICHED */}
                     <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-start gap-4 transition-colors">
-                       <div className="flex gap-6">
-                          <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 shrink-0">
-                             <User size={40} />
+                       <div className="flex gap-6 w-full md:w-auto">
+                          <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 shrink-0">
+                             <User size={32} />
                           </div>
-                          <div>
-                             <h1 className="text-2xl font-bold text-slate-800 dark:text-white">{selectedPatient.name}</h1>
+                          <div className="flex-1">
+                             <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white">{selectedPatient.name}</h1>
                              <div className="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400 mt-2">
                                 <span className="flex items-center gap-1"><Calendar size={14}/> {selectedPatient.age} ans</span>
                                 <span className="flex items-center gap-1"><User size={14}/> {selectedPatient.gender}</span>
-                                <span className="flex items-center gap-1"><Phone size={14}/> {selectedPatient.phone || 'Non renseigné'}</span>
-                                <span className="flex items-center gap-1"><MapPin size={14}/> {selectedPatient.address || 'Non renseigné'}</span>
+                                <span className="flex items-center gap-1 truncate"><Phone size={14}/> {selectedPatient.phone || 'Non renseigné'}</span>
                              </div>
                              
                              <div className="flex flex-wrap gap-2 mt-4">
@@ -548,7 +541,7 @@ const DoctorDashboard = () => {
                              </div>
                           </div>
                        </div>
-                       <button onClick={() => setSelectedPatient(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 self-start">
+                       <button onClick={() => setSelectedPatient(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 self-end md:self-start">
                           <X size={24} />
                        </button>
                     </div>
@@ -602,13 +595,15 @@ const DoctorDashboard = () => {
                              {/* Prescription */}
                              <div className="mt-8 border-t border-slate-100 dark:border-slate-800 pt-6">
                                 <h4 className="font-bold text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2"><Pill size={18} className="text-blue-600 dark:text-emerald-400" /> Ordonnance</h4>
-                                <div className="flex gap-2 mb-3">
+                                <div className="flex flex-col md:flex-row gap-2 mb-3">
                                    <div className="flex-1">
                                       <input list="meds" className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500" placeholder="Nom du médicament" value={medInput} onChange={(e) => setMedInput(e.target.value)}/>
                                       <datalist id="meds">{MOCK_MEDS.map(m => <option key={m} value={m} />)}</datalist>
                                    </div>
-                                   <input className="w-1/3 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:border-emerald-500" placeholder="Posologie" value={doseInput} onChange={(e) => setDoseInput(e.target.value)}/>
-                                   <button onClick={addMedication} className="bg-blue-600 dark:bg-emerald-600 text-white p-2 rounded-lg hover:bg-blue-700 dark:hover:bg-emerald-700"><Plus size={20}/></button>
+                                   <div className="flex gap-2">
+                                        <input className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:outline-none focus:border-emerald-500" placeholder="Posologie" value={doseInput} onChange={(e) => setDoseInput(e.target.value)}/>
+                                        <button onClick={addMedication} className="bg-blue-600 dark:bg-emerald-600 text-white p-2 rounded-lg hover:bg-blue-700 dark:hover:bg-emerald-700 shrink-0"><Plus size={20}/></button>
+                                   </div>
                                 </div>
                                 {prescription.length > 0 && (
                                     <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 space-y-2 mb-4">

@@ -35,7 +35,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, active, on
 type ViewState = 'landing' | 'auth' | 'app';
 
 const App = () => {
-  // CHANGEMENT ICI : Par défaut sur 'landing'
   const [viewState, setViewState] = useState<ViewState>('landing');
   const [currentRole, setCurrentRole] = useState<Role>(Role.PATIENT);
   const [currentView, setCurrentView] = useState('dashboard');
@@ -107,14 +106,12 @@ const App = () => {
   };
 
   const getNavItems = () => {
-    // Dynamic nav based on role
     const common = [{ id: 'settings', label: 'Paramètres', icon: Settings }];
     
     if (currentRole === Role.ADMIN) {
         return [{ id: 'dashboard', label: 'Tableau de Bord', icon: LayoutDashboard }, ...common];
     }
     if (currentRole === Role.DOCTOR) {
-        // Suppression de 'common' pour le médecin
         return [{ id: 'dashboard', label: 'Mes Patients', icon: Stethoscope }];
     }
     if (currentRole === Role.PHARMACIST) {
@@ -140,9 +137,17 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-medical-primary/20 overflow-hidden flex transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-medical-primary/20 overflow-hidden flex transition-colors duration-300 relative">
       
-      {/* Sidebar - Dark Green / Dark Mode Compatible */}
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Responsive */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-72 bg-medical-dark dark:bg-slate-900 shadow-2xl transform transition-transform duration-300
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 flex flex-col border-r border-transparent dark:border-slate-800
@@ -159,14 +164,17 @@ const App = () => {
             </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
             {getNavItems().map(item => (
                 <SidebarItem 
                     key={item.id}
                     icon={item.icon} 
                     label={item.label} 
                     active={currentView === item.id}
-                    onClick={() => setCurrentView(item.id)}
+                    onClick={() => {
+                      setCurrentView(item.id);
+                      setSidebarOpen(false); // Close on selection (mobile)
+                    }}
                 />
             ))}
         </nav>
@@ -200,7 +208,7 @@ const App = () => {
                 <label className="text-xs text-emerald-50 block mb-1">Changer de rôle (Démo)</label>
                 <select 
                     value={currentRole} 
-                    onChange={(e) => { setCurrentRole(e.target.value as Role); setCurrentView('dashboard'); }}
+                    onChange={(e) => { setCurrentRole(e.target.value as Role); setCurrentView('dashboard'); setSidebarOpen(false); }}
                     className="w-full bg-emerald-950 dark:bg-slate-900 border border-emerald-800 dark:border-slate-600 text-xs rounded-lg p-2 text-emerald-200 outline-none focus:border-emerald-500 mb-2"
                 >
                     <option value={Role.PATIENT}>Patient</option>
@@ -220,19 +228,23 @@ const App = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden relative bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden relative bg-slate-50 dark:bg-slate-950 transition-colors duration-300 w-full">
         {/* Mobile Header */}
-        <header className="lg:hidden h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 justify-between shadow-sm z-40">
+        <header className="lg:hidden h-16 flex items-center px-4 md:px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 justify-between shadow-sm z-30 shrink-0">
             <div className="flex items-center gap-4">
-                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-slate-600 dark:text-slate-300 hover:text-medical-primary">
+                <button 
+                  onClick={() => setSidebarOpen(!sidebarOpen)} 
+                  className="p-2 -ml-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                >
                     <Menu size={24} />
                 </button>
-                <span className="font-bold text-slate-800 dark:text-white">Clinique Gamma</span>
+                <span className="font-bold text-slate-800 dark:text-white truncate">Clinique Gamma</span>
             </div>
+            {/* You could add a user avatar or notifications here */}
         </header>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 lg:p-8 relative">
+        {/* Content Area - Scrollable */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6 lg:p-8 relative">
             <div className="relative z-10 max-w-7xl mx-auto h-full pb-20 lg:pb-0">
                 {renderContent()}
             </div>
