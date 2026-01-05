@@ -3,7 +3,7 @@ import { GlassCard, NeonButton, Badge } from '../components/UI';
 import { 
   Stethoscope, TestTube, Pill, Calendar, Phone, MapPin, Mail, 
   User, Clock, ShieldCheck, ArrowRight, Activity, DollarSign,
-  CheckCircle, Moon, Sun, HeartPulse, Microscope, Award, Lock, LogIn
+  CheckCircle, Moon, Sun, HeartPulse, Microscope, Award, Lock, LogIn, Plus
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -46,7 +46,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, darkMode, toggleThem
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="font-sans font-bold text-2xl flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
              <div className="w-8 h-8 rounded-lg bg-medical-primary flex items-center justify-center shadow-lg shadow-emerald-100 dark:shadow-none">
-                <span className="text-white text-lg font-bold">Γ</span>
+                <Plus className="text-white" strokeWidth={4} size={20} />
             </div>
             <span className="text-slate-800 dark:text-white">Clinique<span className="text-medical-primary">Gamma</span></span>
           </div>
@@ -79,7 +79,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, darkMode, toggleThem
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80')] bg-cover opacity-5 dark:opacity-10 mask-image-linear-gradient-to-l pointer-events-none mix-blend-multiply dark:mix-blend-overlay"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10 space-y-8 animate-fade-in">
-          <Badge color="green">Santé 3.0</Badge>
+          {/* Removed Santé 3.0 Badge as requested */}
           <h1 className="text-5xl md:text-7xl font-sans font-bold leading-tight text-slate-900 dark:text-white">
             Votre santé mérite <br />
             <span className="text-medical-primary">le meilleur parcours.</span>

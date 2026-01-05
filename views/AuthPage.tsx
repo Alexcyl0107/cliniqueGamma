@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GlassCard, NeonButton, NeonInput, Badge } from '../components/UI';
-import { User, Lock, Mail, Phone, ArrowLeft, ShieldCheck, UserPlus, LogIn, Stethoscope, Pill, Briefcase, KeyRound, Moon, Sun, X } from 'lucide-react';
+import { User, Lock, Mail, Phone, ArrowLeft, ShieldCheck, UserPlus, LogIn, Stethoscope, Pill, Briefcase, KeyRound, Moon, Sun, X, Plus } from 'lucide-react';
 import { Role } from '../types';
 
 interface AuthPageProps {
@@ -72,7 +72,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
         
         <div className="relative z-10 max-w-lg space-y-8 animate-fade-in">
           <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-2xl shadow-emerald-900/50 mb-8">
-             <span className="text-medical-primary text-3xl font-bold">Γ</span>
+             <Plus className="text-medical-primary" strokeWidth={4} size={36} />
           </div>
           <h1 className="text-5xl font-bold leading-tight">
             Bienvenue sur <br/>

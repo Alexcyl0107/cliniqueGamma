@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Stethoscope, Pill, Settings, LogOut, Menu, UserCircle, Home, Calendar, Moon, Sun } from 'lucide-react';
+import { LayoutDashboard, Stethoscope, Pill, Settings, LogOut, Menu, UserCircle, Home, Calendar, Moon, Sun, Plus } from 'lucide-react';
 import AdminDashboard from './views/AdminDashboard';
 import DoctorDashboard from './views/DoctorDashboard';
 import PharmacyDashboard from './views/PharmacyDashboard';
@@ -155,7 +155,7 @@ const App = () => {
         <div className="p-8">
             <h1 className="font-sans text-2xl font-bold flex items-center gap-3 text-white">
                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-lg">
-                    <span className="text-medical-dark text-lg font-bold">Γ</span>
+                    <Plus className="text-medical-dark" strokeWidth={4} size={20} />
                 </div>
                 <span>Clinique<br/><span className="text-sm font-normal text-emerald-200">Gamma</span></span>
             </h1>
