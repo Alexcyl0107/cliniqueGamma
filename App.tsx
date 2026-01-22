@@ -9,7 +9,6 @@ import AuthPage from './views/AuthPage';
 import { Role } from './types';
 import { NeonButton } from './components/UI';
 
-// Simple Navigation Component within App
 interface SidebarItemProps {
   icon: any;
   label: string;
@@ -40,7 +39,6 @@ const App = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
-  // DARK MODE LOGIC
   const [darkMode, setDarkMode] = useState(() => {
      if (typeof window !== 'undefined') {
          return localStorage.getItem('theme') === 'dark' || 
@@ -61,9 +59,6 @@ const App = () => {
 
   const toggleTheme = () => setDarkMode(!darkMode);
 
-  // --- NAVIGATION FLOW ---
-  
-  // 1. Landing Page
   if (viewState === 'landing') {
     return (
       <LandingPage 
@@ -74,7 +69,6 @@ const App = () => {
     );
   }
 
-  // 2. Authentication Page
   if (viewState === 'auth') {
     return (
       <AuthPage 
@@ -89,7 +83,6 @@ const App = () => {
     );
   }
 
-  // 3. Main Application (Dashboard)
   const renderContent = () => {
     switch (currentRole) {
       case Role.ADMIN:
@@ -138,8 +131,6 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-medical-primary/20 overflow-hidden flex transition-colors duration-300 relative">
-      
-      {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
@@ -147,7 +138,6 @@ const App = () => {
         />
       )}
 
-      {/* Sidebar - Responsive */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-72 bg-medical-dark dark:bg-slate-900 shadow-2xl transform transition-transform duration-300
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 flex flex-col border-r border-transparent dark:border-slate-800
@@ -173,14 +163,13 @@ const App = () => {
                     active={currentView === item.id}
                     onClick={() => {
                       setCurrentView(item.id);
-                      setSidebarOpen(false); // Close on selection (mobile)
+                      setSidebarOpen(false);
                     }}
                 />
             ))}
         </nav>
 
         <div className="p-4 border-t border-emerald-800 dark:border-slate-800 space-y-4 bg-emerald-950/30 dark:bg-slate-900/50">
-             {/* Theme Toggle */}
              <button 
                 onClick={toggleTheme}
                 className="w-full flex items-center justify-between p-3 rounded-xl bg-emerald-900/40 dark:bg-slate-800 border border-emerald-800 dark:border-slate-700 text-emerald-100 dark:text-slate-300 hover:bg-emerald-800 dark:hover:bg-slate-700/80 transition-all"
@@ -189,11 +178,10 @@ const App = () => {
                     {darkMode ? <Moon size={14}/> : <Sun size={14}/>} Mode {darkMode ? 'Sombre' : 'Clair'}
                 </span>
                 <div className={`w-8 h-4 rounded-full relative transition-colors ${darkMode ? 'bg-emerald-500' : 'bg-slate-500'}`}>
-                    <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-transform ${darkMode ? 'left-4.5' : 'left-0.5'}`} style={{ left: darkMode ? '18px' : '2px' }}></div>
+                    <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-transform`} style={{ left: darkMode ? '18px' : '2px' }}></div>
                 </div>
              </button>
 
-             {/* Role Switcher */}
             <div className="bg-emerald-900/50 dark:bg-slate-800 rounded-xl p-4 border border-emerald-800 dark:border-slate-700">
                 <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-full bg-emerald-800 dark:bg-slate-700 flex items-center justify-center border border-emerald-700 dark:border-slate-600">
@@ -227,9 +215,7 @@ const App = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative bg-slate-50 dark:bg-slate-950 transition-colors duration-300 w-full">
-        {/* Mobile Header */}
         <header className="lg:hidden h-16 flex items-center px-4 md:px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 justify-between shadow-sm z-30 shrink-0">
             <div className="flex items-center gap-4">
                 <button 
@@ -240,10 +226,8 @@ const App = () => {
                 </button>
                 <span className="font-bold text-slate-800 dark:text-white truncate">Clinique Gamma</span>
             </div>
-            {/* You could add a user avatar or notifications here */}
         </header>
 
-        {/* Content Area - Scrollable */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6 lg:p-8 relative">
             <div className="relative z-10 max-w-7xl mx-auto h-full pb-20 lg:pb-0">
                 {renderContent()}

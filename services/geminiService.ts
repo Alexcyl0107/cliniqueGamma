@@ -1,94 +1,81 @@
-import { GoogleGenAI } from "@google/genai";
-
-// Initialize Gemini Client
-// We strictly follow the rule: create instance right before call if key might change, 
-// but here we assume env key is static for the session or handled via a context if dynamic.
-// For this demo, we initialize it here but catch errors if key is missing.
-
-const getAIClient = () => {
-  const apiKey = process.env.API_KEY || '';
-  if (!apiKey) {
-    console.warn("API_KEY is missing. AI features will return mock responses.");
-    return null;
-  }
-  return new GoogleGenAI({ apiKey });
-};
+import { GoogleGenAI, Type } from "@google/genai";
 
 export const analyzeSymptoms = async (symptoms: string, patientData: string): Promise<string> => {
-  const ai = getAIClient();
-  if (!ai) return "AI Service Unavailable: Please configure API Key.";
+  if (!process.env.API_KEY) {
+    console.warn("Clé API manquante.");
+    return "Service IA indisponible : Veuillez configurer la clé API.";
+  }
+  
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
     const prompt = `
-      Act as a senior medical diagnostic assistant.
-      Patient Data: ${patientData}
-      Current Symptoms: ${symptoms}
+      Agis en tant qu'assistant de diagnostic médical senior.
+      Données du patient : ${patientData}
+      Symptômes actuels : ${symptoms}
       
-      Provide a concise potential diagnosis, recommended tests, and immediate advice. 
-      Format the response in clear HTML sections (using tags like <strong>, <ul>, <li>) but return it as a string.
-      Keep it professional but concise.
+      Fournis un diagnostic potentiel concis, les tests recommandés et des conseils immédiats. 
+      Formate la réponse en sections HTML claires (en utilisant des balises comme <strong>, <ul>, <li>) mais retourne-la sous forme de chaîne de caractères.
+      Reste professionnel mais concis. Réponds exclusivement en Français.
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-pro-preview',
       contents: prompt,
     });
 
-    return response.text || "No analysis could be generated.";
+    return response.text || "Aucune analyse n'a pu être générée.";
   } catch (error) {
-    console.error("AI Error:", error);
-    return "Error generating diagnosis. Please check system logs.";
+    console.error("Erreur IA:", error);
+    return "Erreur lors de la génération du diagnostic. Veuillez consulter les journaux système.";
   }
 };
 
 export const predictStockShortage = async (inventoryList: string): Promise<string> => {
-  const ai = getAIClient();
-  if (!ai) return "AI Service Unavailable.";
+  if (!process.env.API_KEY) return "[]";
+  
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   try {
     const prompt = `
-      Analyze this pharmacy inventory list and predict which items are at risk of running out based on typical hospital usage patterns.
-      Inventory: ${inventoryList}
+      Analyse cette liste d'inventaire de pharmacie et prédis quels articles risquent d'être en rupture de stock en fonction des modèles d'utilisation hospitalière typiques.
+      Inventaire : ${inventoryList}
       
-      Return a JSON array of objects with properties: "medicineName", "riskLevel" (High/Medium), and "reason".
-      Only return valid JSON.
+      Retourne un tableau JSON d'objets avec les propriétés : "medicineName" (nom), "riskLevel" (Niveau de risque : Élevé/Moyen), et "reason" (raison en français).
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
-        responseMimeType: "application/json"
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              medicineName: {
+                type: Type.STRING,
+                description: "Nom du médicament"
+              },
+              riskLevel: {
+                type: Type.STRING,
+                description: "Niveau de risque : Élevé ou Moyen"
+              },
+              reason: {
+                type: Type.STRING,
+                description: "Raison de la pénurie prédite"
+              }
+            },
+            required: ["medicineName", "riskLevel", "reason"]
+          }
+        }
       }
     });
 
     return response.text || "[]";
   } catch (error) {
-    console.error("AI Stock Error:", error);
+    console.error("Erreur Stock IA:", error);
     return "[]";
-  }
-};
-
-export const generateSmartSchedule = async (doctors: string, pendingAppointments: string): Promise<string> => {
-  const ai = getAIClient();
-  if (!ai) return "AI Service Unavailable.";
-
-  try {
-    const prompt = `
-      Optimize the daily schedule.
-      Doctors Available: ${doctors}
-      Pending Appointments: ${pendingAppointments}
-      
-      Assign patients to doctors to minimize wait time. Return a summary text of the optimized schedule.
-    `;
-    
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-    });
-    
-    return response.text || "Scheduling optimization failed.";
-  } catch (e) {
-    return "Error in scheduling AI.";
   }
 };

@@ -14,14 +14,14 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   
-  // Form States
+  // États du formulaire
   const [role, setRole] = useState<Role>(Role.PATIENT); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
-  // Security Key State (Pour le staff)
+  // État Clé de Sécurité (Staff)
   const [showKeyInput, setShowKeyInput] = useState(false);
   const [accessKey, setAccessKey] = useState('');
   const [keyError, setKeyError] = useState('');
@@ -32,15 +32,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
 
     setLoading(true);
     
-    // Simuler délai API
+    // Simulation délai API
     setTimeout(() => {
       setLoading(false);
       
       if (role === Role.PATIENT) {
-        // Le patient n'a pas besoin de clé spéciale
         onLoginSuccess(role);
       } else {
-        // Le staff doit entrer la clé d'accès
         setShowKeyInput(true);
       }
     }, 1000);
@@ -65,74 +63,71 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 font-sans transition-colors duration-300">
       
-      {/* Left Side - Image & Branding (Hidden on mobile) */}
+      {/* Côté Gauche - Image & Branding */}
       <div className="hidden lg:flex w-1/2 bg-medical-dark dark:bg-slate-900 relative overflow-hidden items-center justify-center text-white p-12 transition-colors">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80')] bg-cover opacity-20 mix-blend-overlay"></div>
         <div className="absolute inset-0 bg-gradient-to-tr from-medical-dark via-emerald-900/90 to-medical-primary/40 dark:from-slate-900 dark:via-emerald-950/80 dark:to-slate-800/40"></div>
         
-        <div className="relative z-10 max-w-lg space-y-8 animate-fade-in">
-          <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-2xl shadow-emerald-900/50 mb-8">
+        <div className="relative z-10 max-w-lg space-y-8 animate-fade-in text-center lg:text-left">
+          <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-2xl shadow-emerald-900/50 mb-8 mx-auto lg:mx-0">
              <Plus className="text-medical-primary" strokeWidth={4} size={36} />
           </div>
-          <h1 className="text-5xl font-bold leading-tight">
+          <h1 className="text-5xl font-black leading-tight tracking-tighter">
             Bienvenue sur <br/>
             <span className="text-emerald-300">Clinique Gamma</span>
           </h1>
-          <p className="text-emerald-100 text-lg leading-relaxed">
+          <p className="text-emerald-100 text-lg leading-relaxed font-medium">
             La plateforme de gestion médicale nouvelle génération. 
             Connectez-vous pour accéder à votre espace personnel ou professionnel.
           </p>
           
-          <div className="flex gap-4 pt-4">
-             <div className="flex items-center gap-2 bg-emerald-800/50 dark:bg-slate-800/50 p-3 rounded-lg backdrop-blur-sm border border-emerald-700 dark:border-slate-700">
+          <div className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
+             <div className="flex items-center gap-2 bg-emerald-800/50 dark:bg-slate-800/50 p-3 rounded-xl backdrop-blur-sm border border-emerald-700 dark:border-slate-700">
                 <ShieldCheck className="text-emerald-300" />
-                <span className="text-sm font-medium">Données Sécurisées</span>
+                <span className="text-xs font-bold uppercase tracking-widest">Données Sécurisées</span>
              </div>
-             <div className="flex items-center gap-2 bg-emerald-800/50 dark:bg-slate-800/50 p-3 rounded-lg backdrop-blur-sm border border-emerald-700 dark:border-slate-700">
+             <div className="flex items-center gap-2 bg-emerald-800/50 dark:bg-slate-800/50 p-3 rounded-xl backdrop-blur-sm border border-emerald-700 dark:border-slate-700">
                 <Stethoscope className="text-emerald-300" />
-                <span className="text-sm font-medium">Outils Cliniques IA</span>
+                <span className="text-xs font-bold uppercase tracking-widest">Outils Précis</span>
              </div>
           </div>
         </div>
       </div>
 
-      {/* Right Side - Auth Forms */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-4 md:p-6 lg:p-12 relative overflow-y-auto">
-        <div className="absolute top-4 right-4 md:top-8 md:right-8 flex gap-2 md:gap-4 z-20">
+      {/* Côté Droit - Formulaire */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 relative">
+        <div className="absolute top-8 right-8 flex gap-4 z-20">
              <button 
                 onClick={toggleTheme}
                 className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
-                title="Changer de thème"
               >
                   {darkMode ? <Moon size={20} /> : <Sun size={20} />}
               </button>
             <button 
                 onClick={onBack}
-                className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-medical-primary dark:hover:text-emerald-400 transition-colors font-medium text-sm bg-white dark:bg-slate-800 px-3 py-2 rounded-lg shadow-sm lg:bg-transparent lg:shadow-none lg:p-0"
+                className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-medical-primary font-black uppercase text-[10px] tracking-widest"
             >
-                <span className="hidden lg:inline"><ArrowLeft size={16} /></span> 
-                Site Vitrine
-                <span className="lg:hidden"><ArrowLeft size={16} /></span>
+                <ArrowLeft size={16} /> Site Vitrine
             </button>
         </div>
 
-        <div className="w-full max-w-md space-y-8 animate-fade-in mt-12 lg:mt-0">
+        <div className="w-full max-w-md space-y-8 animate-fade-in">
             <div className="text-center">
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+                <h2 className="text-3xl font-black text-slate-800 dark:text-white uppercase tracking-tighter">
                     {isLogin ? 'Connexion' : 'Créer un compte'}
                 </h2>
-                <p className="text-slate-500 dark:text-slate-400 mt-2">
-                    {isLogin ? 'Identifiez-vous pour accéder à votre espace.' : 'Rejoignez la Clinique Gamma.'}
+                <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">
+                    {isLogin ? 'Accédez à vos outils de santé digitaux.' : 'Rejoignez le réseau Clinique Gamma.'}
                 </p>
             </div>
 
-            <GlassCard className="border-emerald-100 shadow-xl shadow-emerald-50/50 dark:shadow-none dark:border-slate-800 relative">
-                <form onSubmit={handleSubmit} className="space-y-5">
+            <GlassCard className="border-emerald-100 dark:border-slate-800 shadow-xl shadow-emerald-50/50 dark:shadow-none">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     
-                    {/* Role Selection Grid - Responsive */}
+                    {/* Choix du rôle */}
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">
-                            {isLogin ? 'Se connecter en tant que :' : 'Je suis :'}
+                        <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">
+                            Type de compte
                         </label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             {roles.map((r) => (
@@ -140,128 +135,115 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLoginSuccess, onBack, darkMode, t
                                     key={r.id}
                                     type="button"
                                     onClick={() => setRole(r.id)}
-                                    className={`p-2 rounded-lg border flex flex-col items-center gap-1 transition-all ${
+                                    className={`p-2 rounded-xl border flex flex-col items-center gap-1 transition-all ${
                                         role === r.id 
-                                        ? 'bg-medical-primary dark:bg-emerald-600 text-white border-medical-primary dark:border-emerald-600 ring-2 ring-emerald-200 dark:ring-emerald-900 ring-offset-1 shadow-md' 
-                                        : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 hover:border-medical-primary dark:hover:border-emerald-500 hover:text-medical-primary dark:hover:text-emerald-500'
+                                        ? 'bg-medical-primary dark:bg-emerald-600 text-white border-medical-primary shadow-lg ring-2 ring-emerald-500/20' 
+                                        : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 hover:border-emerald-500'
                                     }`}
                                 >
                                     <r.icon size={18} />
-                                    <div className="text-center w-full">
-                                        <span className="block text-[10px] font-bold uppercase truncate">{r.label}</span>
-                                    </div>
+                                    <span className="text-[10px] font-black uppercase tracking-tight">{r.label}</span>
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {!isLogin && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <NeonInput 
-                                label="Nom complet" 
-                                placeholder={role === Role.DOCTOR ? "Dr. Jean Dupont" : "Jean Dupont"}
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required 
-                            />
-                            <NeonInput 
-                                label="Téléphone" 
-                                placeholder="+228..." 
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                        </div>
-                    )}
+                    <div className="space-y-4">
+                      {!isLogin && (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <NeonInput 
+                                  label="Nom complet" 
+                                  placeholder="Ex: Koffi Mensah"
+                                  value={name}
+                                  onChange={(e) => setName(e.target.value)}
+                                  required 
+                              />
+                              <NeonInput 
+                                  label="Mobile" 
+                                  placeholder="+228..." 
+                                  value={phone}
+                                  onChange={(e) => setPhone(e.target.value)}
+                              />
+                          </div>
+                      )}
 
-                    <NeonInput 
-                        label="Email" 
-                        type="email" 
-                        placeholder={role === Role.DOCTOR ? "medecin@clinique.com" : "email@exemple.com"}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    
-                    <div>
-                        <NeonInput 
-                            label="Mot de passe" 
-                            type="password" 
-                            placeholder="••••••••" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                         {isLogin && (
-                            <div className="flex justify-end mt-1">
-                                <a href="#" className="text-xs text-medical-primary hover:underline font-medium dark:text-emerald-400">Mot de passe oublié ?</a>
-                            </div>
-                        )}
+                      <NeonInput 
+                          label="E-mail" 
+                          type="email" 
+                          placeholder="votre@email.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                      />
+                      
+                      <NeonInput 
+                          label="Mot de passe" 
+                          type="password" 
+                          placeholder="••••••••" 
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                      />
                     </div>
 
                     <NeonButton 
                         type="submit" 
                         variant="primary" 
-                        className="w-full py-3 mt-4" 
+                        className="w-full py-4 mt-2" 
                         icon={loading ? undefined : (isLogin ? LogIn : UserPlus)}
+                        disabled={loading}
                     >
-                        {loading ? 'Connexion en cours...' : (isLogin ? `Accéder (${roles.find(r => r.id === role)?.label})` : 'S\'inscrire')}
+                        {loading ? 'Traitement...' : (isLogin ? 'Se connecter' : 'Valider inscription')}
                     </NeonButton>
                 </form>
 
-                {/* --- MODAL CLÉ D'ACCÈS POUR LE PERSONNEL --- */}
+                {/* MODAL CLÉ D'ACCÈS */}
                 {showKeyInput && (
-                    <div className="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl z-20 flex flex-col items-center justify-center p-6 animate-fade-in text-center">
-                        <div className="bg-red-100 dark:bg-red-900/30 p-4 rounded-full text-red-600 dark:text-red-400 mb-4">
+                    <div className="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl z-20 flex flex-col items-center justify-center p-8 animate-fade-in text-center">
+                        <div className="bg-red-100 dark:bg-red-900/30 p-4 rounded-full text-red-600 dark:text-red-400 mb-4 shadow-sm">
                             <Lock size={32} />
                         </div>
-                        <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Accès Restreint</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-                            L'accès à l'espace <strong>{roles.find(r => r.id === role)?.label}</strong> nécessite une clé de sécurité.
+                        <h3 className="text-xl font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tighter">Accès Restreint Staff</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 font-bold">
+                            Veuillez saisir votre clé d'authentification professionnelle.
                         </p>
                         <form onSubmit={verifyKeyAndLogin} className="w-full space-y-4">
                             <NeonInput 
-                                label="Clé d'Accès Staff"
+                                label="Clé de sécurité"
                                 type="password"
-                                placeholder="Entrez la clé..."
+                                placeholder="Saisir la clé..."
                                 value={accessKey}
                                 onChange={(e) => {setAccessKey(e.target.value); setKeyError('')}}
                                 autoFocus
                             />
-                            {keyError && <p className="text-red-500 text-xs font-bold">{keyError}</p>}
+                            {keyError && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest">{keyError}</p>}
                             
                             <NeonButton type="submit" variant="primary" className="w-full" icon={KeyRound}>
-                                Valider l'accès
+                                Déverrouiller
                             </NeonButton>
                             <button 
                                 type="button"
-                                onClick={() => {setShowKeyInput(false); setAccessKey(''); setKeyError('')}}
-                                className="text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-300 mt-2"
+                                onClick={() => setShowKeyInput(false)}
+                                className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2 hover:text-slate-800 dark:hover:text-slate-200"
                             >
-                                Annuler
+                                Retour
                             </button>
                         </form>
                     </div>
                 )}
             </GlassCard>
 
-            <div className="text-center pb-8 lg:pb-0">
-                <p className="text-slate-600 dark:text-slate-400">
-                    {isLogin ? "Pas encore de compte ?" : "Déjà un compte ?"}
+            <div className="text-center pb-8">
+                <p className="text-slate-500 dark:text-slate-400 font-bold text-sm">
+                    {isLogin ? "Nouveau ici ?" : "Déjà membre ?"}
                     <button 
-                        onClick={() => {
-                            setIsLogin(!isLogin);
-                        }}
-                        className="ml-2 font-bold text-medical-primary hover:underline focus:outline-none dark:text-emerald-400"
+                        onClick={() => setIsLogin(!isLogin)}
+                        className="ml-2 font-black text-medical-primary hover:underline dark:text-emerald-400 uppercase tracking-widest"
                     >
                         {isLogin ? "S'inscrire" : "Se connecter"}
                     </button>
                 </p>
             </div>
-        </div>
-        
-        {/* Footer info */}
-        <div className="lg:absolute bottom-6 text-slate-400 text-xs dark:text-slate-500">
-            &copy; {new Date().getFullYear()} Clinique Gamma. Sécurité HIPAA & RGPD.
         </div>
       </div>
     </div>
